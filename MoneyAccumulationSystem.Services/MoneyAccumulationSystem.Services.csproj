@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.5.1" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+        <PackageReference Include="MediatR" Version="12.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MoneyAccumulationSystem.CrossCutting\MoneyAccumulationSystem.CrossCutting.csproj" />
+      <ProjectReference Include="..\MoneyAccumulationSystem.Database.EF\MoneyAccumulationSystem.Database.EF.csproj" />
+      <ProjectReference Include="..\MoneyAccumulationSystem.Repositories\MoneyAccumulationSystem.Repositories.csproj" />
+    </ItemGroup>
+
+</Project>
