@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using MoneyAccumulationSystem.Database.EF;
 using MoneyAccumulationSystem.Repositories.UnitOfWork;
 using MoneyAccumulationSystem.Services.Extensions;
+using MoneyAccumulationSystem.Services.Reports;
+using MoneyAccumulationSystem.Services.Reports.Excel;
 using MoneyAccumulationSystem.WebApi.Auth;
 using MoneyAccumulationSystem.WebApi.Services;
 using MoneyAccumulationSystem.WebApi.Swagger;
@@ -37,6 +39,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddHostedService<DatabaseDeploymentBackgroundService>();
+
+        services.AddScoped<IReportService, ExcelReportService>();
+        
         services.AddHostedService<SeedBackgroundService>();
     }
 

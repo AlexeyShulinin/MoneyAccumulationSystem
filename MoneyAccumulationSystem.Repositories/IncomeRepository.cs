@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,5 +47,12 @@ public class IncomeRepository : IIncomeRepository
     public void Update(Income income, CancellationToken cancellationToken)
     {
         dbContext.Update(income);
+    }
+
+    public async Task<IDictionary<DateTime, decimal>> GetYearlyDictionaryAsync(int year, CancellationToken cancellationToken)
+    {
+        return await dbContext.Incomes
+            .Where(x => x.DateTimeOffset.Year == year)
+            .ToDictionaryAsync(x => x.DateTimeOffset.Date, x => x.Amount, cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MoneyAccumulationSystem.Database.EF.Models;
@@ -11,4 +12,5 @@ public interface IIncomeRepository
     Task<Income> GetAsync(int incomeId, CancellationToken cancellationToken);
     void Create(Income income, CancellationToken cancellationToken);
     void Update(Income income, CancellationToken cancellationToken);
+    Task<IDictionary<DateTime, decimal>> GetYearlyDictionaryAsync(int year, CancellationToken cancellationToken);
 }

@@ -51,8 +51,21 @@ public class SeedBackgroundService : BackgroundService
     {
         dbContext.Incomes.AddRange(new List<Income>
         {
-            new() { Id = 1, UserId = 1, IncomeTypeId = 1, Amount = 800, DateTimeOffset = new DateTimeOffset() },
-            new() { Id = 2, UserId = 1, IncomeTypeId = 1, Amount = 900, DateTimeOffset = new DateTimeOffset() }
+            new()
+            {
+                Id = 1, UserId = 1, IncomeTypeId = 1, Amount = 800, 
+                DateTimeOffset = new DateTimeOffset(new DateTime(2022, 1, 5), TimeSpan.Zero)
+            },
+            new()
+            {
+                Id = 2, UserId = 1, IncomeTypeId = 1, Amount = 900, 
+                DateTimeOffset = new DateTimeOffset(new DateTime(2022, 1, 20), TimeSpan.Zero)
+            },
+            new()
+            {
+                Id = 3, UserId = 1, IncomeTypeId = 1, Amount = 1000, 
+                DateTimeOffset = new DateTimeOffset(new DateTime(2022, 2, 20), TimeSpan.Zero)
+            }
         });
     }
 }
