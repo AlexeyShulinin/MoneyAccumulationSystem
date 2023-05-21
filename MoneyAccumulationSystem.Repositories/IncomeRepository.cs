@@ -39,12 +39,12 @@ public class IncomeRepository : IIncomeRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public void Create(Income income, CancellationToken cancellationToken)
+    public void Create(Income income)
     {
         dbContext.Incomes.Add(income);
     }
 
-    public void Update(Income income, CancellationToken cancellationToken)
+    public void Update(Income income)
     {
         dbContext.Update(income);
     }

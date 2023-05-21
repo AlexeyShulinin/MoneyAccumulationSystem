@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using MoneyAccumulationSystem.CrossCutting.Constants;
+using MoneyAccumulationSystem.Services.DtoModels;
 using MoneyAccumulationSystem.Services.Features.Incomes;
 using MoneyAccumulationSystem.Services.Features.Reports;
 using MoneyAccumulationSystem.WebApi.ApiModels;
@@ -33,10 +34,41 @@ public class IncomesController : BaseApiController
     /// <returns>List of user's Incomes</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IList<IncomeApiModel>), StatusCodes.Status200OK)]
-    public async Task<IList<IncomeApiModel>> GetList(CancellationToken cancellationToken)
+    public async Task<IList<IncomeApiModel>> GetListAsync(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetIncomeListQuery(), cancellationToken);
         return mapper.Map<List<IncomeApiModel>>(result);
+    }
+
+    /// <summary>
+    /// Get Income by Id
+    /// </summary>
+    /// <param name="incomeId">Income Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Income</returns>
+    [HttpGet("{incomeId}")]
+    [ProducesResponseType(typeof(IncomeApiModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IncomeApiModel> GetAsync(int incomeId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetIncomeQuery { Id = incomeId }, cancellationToken);
+        return mapper.Map<IncomeApiModel>(result);
+    }
+
+    /// <summary>
+    /// Create Income
+    /// </summary>
+    /// <param name="income">Data</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Income</returns>
+    [HttpPost]
+    [ProducesResponseType(typeof(IncomeApiModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateAsync(IncomeApiModel income, CancellationToken cancellationToken)
+    {
+        var incomeDto = mapper.Map<IncomeDtoModel>(income);
+        var result = await mediator.Send(new CreateIncomeCommand { Income = incomeDto }, cancellationToken);
+        return CreatedAtAction("Get", new { incomeId = result }, result);
     }
 
     /// <summary>
@@ -46,7 +78,7 @@ public class IncomesController : BaseApiController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{year}/report")]
-    public async Task<FileResult> GetYearlyReport(int year, CancellationToken cancellationToken)
+    public async Task<FileResult> GetYearlyReportAsync(int year, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GenerateYearlyReportQuery { Year = year }, cancellationToken);
 

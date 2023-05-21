@@ -9,5 +9,6 @@ public class MiscProfile : Profile
     public MiscProfile()
     {
         CreateMap<ReferenceDtoModel, ReferenceApiModel>();
+        CreateMap<ReferenceApiModel, ReferenceDtoModel>();
     }
 }

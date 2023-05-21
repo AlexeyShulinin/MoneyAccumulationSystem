@@ -10,7 +10,7 @@ public class Income : BaseEntity
     public DateTimeOffset DateTimeOffset { get; set; }
     public string Notes { get; set; }
     
-    public int IncomeTypeId { get; set; }
+    public int? IncomeTypeId { get; set; }
     
     public User User { get; set; }
     public IncomeType IncomeType { get; set; }

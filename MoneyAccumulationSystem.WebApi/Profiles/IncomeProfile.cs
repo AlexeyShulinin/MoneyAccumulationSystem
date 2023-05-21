@@ -9,5 +9,6 @@ public class IncomeProfile : Profile
     public IncomeProfile()
     {
         CreateMap<IncomeDtoModel, IncomeApiModel>();
+        CreateMap<IncomeApiModel, IncomeDtoModel>();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using MoneyAccumulationSystem.CrossCutting.Auth;
 using MoneyAccumulationSystem.Services.Features.Users;
 using MoneyAccumulationSystem.WebApi.ApiModels;
@@ -45,7 +39,7 @@ public class UsersController : BaseApiController
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(typeof(IResult), StatusCodes.Status200OK)]
-    public async Task<IResult> GetUserToken(UserTokenApiModel userToken, CancellationToken cancellationToken)
+    public async Task<IResult> GetUserTokenAsync(UserTokenApiModel userToken, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetUserQuery
         {
@@ -70,7 +64,7 @@ public class UsersController : BaseApiController
     /// <returns>List of Users</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IList<UserApiModel>), StatusCodes.Status200OK)]
-    public async Task<IList<UserApiModel>> GetList(CancellationToken cancellationToken)
+    public async Task<IList<UserApiModel>> GetListAsync(CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetUserListQuery(), cancellationToken);
         return mapper.Map<List<UserApiModel>>(result);
