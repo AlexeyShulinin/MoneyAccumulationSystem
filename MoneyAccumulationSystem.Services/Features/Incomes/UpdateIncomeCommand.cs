@@ -11,45 +11,50 @@ using MoneyAccumulationSystem.Database.EF.Models;
 using MoneyAccumulationSystem.Repositories.UnitOfWork;
 using MoneyAccumulationSystem.Services.Commands;
 using MoneyAccumulationSystem.Services.DtoModels;
+using MoneyAccumulationSystem.Services.Exceptions;
 using MoneyAccumulationSystem.Services.Validators;
 
 namespace MoneyAccumulationSystem.Services.Features.Incomes;
 
-public class CreateIncomeCommand : ICommand<int>
+public class UpdateIncomeCommand : ICommand<IncomeDtoModel>
 {
+    public int IncomeId { get; set; }
     public IncomeDtoModel Income { get; set; }
     
-    public class CreateIncomeCommandHandler : IRequestHandler<CreateIncomeCommand, int>
+    public class UpdateIncomeCommandHandler : IRequestHandler<UpdateIncomeCommand, IncomeDtoModel>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        public CreateIncomeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public UpdateIncomeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.httpContextAccessor = httpContextAccessor;
         }
         
-        public async Task<int> Handle(CreateIncomeCommand request, CancellationToken cancellationToken)
+        public async Task<IncomeDtoModel> Handle(UpdateIncomeCommand request, CancellationToken cancellationToken)
         {
-            var authUser = httpContextAccessor.GetAuthUserFromClaims();
-            var dbIncome = mapper.Map<Income>(request.Income);
-            dbIncome.UserId = authUser.Id;
-
-            unitOfWork.IncomeRepository.Create(dbIncome);
+            var dbIncome = await unitOfWork.IncomeRepository.GetAsync(request.IncomeId, cancellationToken);
+            if (dbIncome == null)
+            {
+                throw new NotFoundException();
+            }
+            
+            mapper.Map(request.Income, dbIncome);
+            unitOfWork.IncomeRepository.Update(dbIncome);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            return dbIncome.Id;
+            return mapper.Map<IncomeDtoModel>(dbIncome);
         }
     }
     
-    public class CreateIncomeCommandValidator : AbstractValidator<CreateIncomeCommand>
+    public class UpdateIncomeCommandValidator : AbstractValidator<UpdateIncomeCommand>
     {
-        public CreateIncomeCommandValidator(MasDbContext dbContext)
+        public UpdateIncomeCommandValidator(MasDbContext dbContext)
         {
+            RuleFor(x => x.IncomeId)
+                .Equal(x => x.Income.Id);
             RuleFor(x => x.Income.Id)
-                .Equal(0);
+                .GreaterThan(0);
             RuleFor(x => x.Income.DateTimeOffset)
                 .GreaterThanOrEqualTo(DateTimeOffset.MinValue)
                 .When(x => x.Income.DateTimeOffset != null);

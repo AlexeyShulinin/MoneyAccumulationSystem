@@ -4,10 +4,12 @@ using MoneyAccumulationSystem.Database.EF.Models;
 
 namespace MoneyAccumulationSystem.Database.EF.Configurations;
 
-public class IncomeConfiguration : IEntityTypeConfiguration<Income>
+public class IncomeConfiguration : BaseEntityConfiguration<Income>
 {
-    public void Configure(EntityTypeBuilder<Income> builder)
+    public override void Configure(EntityTypeBuilder<Income> builder)
     {
+        base.Configure(builder);
+        
         builder.Property(e => e.Amount)
             .HasPrecision(18, 4);
 

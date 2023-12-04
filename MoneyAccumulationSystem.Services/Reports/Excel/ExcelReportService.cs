@@ -16,7 +16,7 @@ public class ExcelReportService : IReportService
         var dateFormat = "MMMM dd";
         const int incomeValueCol = 6;
         
-        var package = new ExcelPackage(path);
+        using var package = new ExcelPackage(path);
 
         if (!package.File.Exists)
         {

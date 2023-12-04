@@ -12,5 +12,6 @@ public interface IIncomeRepository
     Task<Income> GetAsync(int incomeId, CancellationToken cancellationToken);
     void Create(Income income);
     void Update(Income income);
+    void Delete(Income income);
     Task<IDictionary<DateTime, decimal>> GetYearlyDictionaryAsync(int year, CancellationToken cancellationToken);
 }

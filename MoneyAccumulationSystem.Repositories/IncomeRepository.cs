@@ -49,6 +49,11 @@ public class IncomeRepository : IIncomeRepository
         dbContext.Update(income);
     }
 
+    public void Delete(Income income)
+    {
+        dbContext.Incomes.Remove(income);
+    }
+
     public async Task<IDictionary<DateTime, decimal>> GetYearlyDictionaryAsync(int year, CancellationToken cancellationToken)
     {
         return await dbContext.Incomes

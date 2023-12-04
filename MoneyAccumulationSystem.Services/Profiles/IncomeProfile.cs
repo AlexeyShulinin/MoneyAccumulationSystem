@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using MoneyAccumulationSystem.Database.EF.Models;
 using MoneyAccumulationSystem.Services.DtoModels;
 
@@ -10,8 +11,9 @@ public class IncomeProfile : Profile
     {
         CreateMap<Income, IncomeDtoModel>();
         CreateMap<IncomeDtoModel, Income>()
-            .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.User.Id))
-            .ForMember(x => x.User, opt => opt.Ignore())
+            .ForMember(x => x.DateTimeOffset, opt => opt.MapFrom(x => x.DateTimeOffset ?? DateTimeOffset.UtcNow))
+            .ForMember(x => x.UserId, opt => opt.MapFrom((_, x) => x.UserId))
+            .ForMember(x => x.User, opt => opt.UseDestinationValue())
             .ForMember(x => x.IncomeTypeId, opt => opt.MapFrom((x, _) => x.IncomeType?.Id))
             .ForMember(x => x.IncomeType, opt => opt.Ignore());
     }

@@ -65,8 +65,5 @@ public class UsersController : BaseApiController
     [HttpGet]
     [ProducesResponseType(typeof(IList<UserApiModel>), StatusCodes.Status200OK)]
     public async Task<IList<UserApiModel>> GetListAsync(CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new GetUserListQuery(), cancellationToken);
-        return mapper.Map<List<UserApiModel>>(result);
-    }
+        => mapper.Map<List<UserApiModel>>(await mediator.Send(new GetUserListQuery(), cancellationToken));
 }

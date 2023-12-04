@@ -41,9 +41,9 @@ public class GetUserQuery : IQuery<UserDtoModel>
         }
     }
     
-    public class GetCityQueryValidator : AbstractValidator<GetUserQuery>
+    public class GetUserQueryValidator : AbstractValidator<GetUserQuery>
     {
-        public GetCityQueryValidator()
+        public GetUserQueryValidator()
         {
             RuleFor(x => x.Id)
                 .GreaterThan(0)

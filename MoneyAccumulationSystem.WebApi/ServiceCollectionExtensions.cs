@@ -126,7 +126,7 @@ public static class ServiceCollectionExtensions
 
 #if USE_SQL_SERVER
         services.AddDbContext<AccumulationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("AccumulationApp")));
+            options.UseSqlServer(configuration.GetConnectionString("MoneyAccumulationSystem")));
 #endif
         
         services.AddDbContext<MasDbContext>(options =>

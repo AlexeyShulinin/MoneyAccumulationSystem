@@ -26,7 +26,7 @@ public class IncomesController : BaseApiController
         this.mediator = mediator;
         this.mapper = mapper;
     }
-    
+
     /// <summary>
     /// Get list of user's Incomes
     /// </summary>
@@ -35,10 +35,7 @@ public class IncomesController : BaseApiController
     [HttpGet]
     [ProducesResponseType(typeof(IList<IncomeApiModel>), StatusCodes.Status200OK)]
     public async Task<IList<IncomeApiModel>> GetListAsync(CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new GetIncomeListQuery(), cancellationToken);
-        return mapper.Map<List<IncomeApiModel>>(result);
-    }
+        => mapper.Map<List<IncomeApiModel>>(await mediator.Send(new GetIncomeListQuery(), cancellationToken));
 
     /// <summary>
     /// Get Income by Id
@@ -50,10 +47,7 @@ public class IncomesController : BaseApiController
     [ProducesResponseType(typeof(IncomeApiModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IncomeApiModel> GetAsync(int incomeId, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(new GetIncomeQuery { Id = incomeId }, cancellationToken);
-        return mapper.Map<IncomeApiModel>(result);
-    }
+        => mapper.Map<IncomeApiModel>(await mediator.Send(new GetIncomeQuery { Id = incomeId }, cancellationToken));
 
     /// <summary>
     /// Create Income
@@ -63,12 +57,50 @@ public class IncomesController : BaseApiController
     /// <returns>Income</returns>
     [HttpPost]
     [ProducesResponseType(typeof(IncomeApiModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails),StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync(IncomeApiModel income, CancellationToken cancellationToken)
     {
-        var incomeDto = mapper.Map<IncomeDtoModel>(income);
-        var result = await mediator.Send(new CreateIncomeCommand { Income = incomeDto }, cancellationToken);
+        var result = await mediator.Send(new CreateIncomeCommand
+        {
+            Income = mapper.Map<IncomeDtoModel>(income)
+        }, cancellationToken);
         return CreatedAtAction("Get", new { incomeId = result }, result);
+    }
+
+    /// <summary>
+    /// Update Income
+    /// </summary>
+    /// <param name="incomeId">Income Id</param>
+    /// <param name="income">Data</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Income</returns>
+    [HttpPut("{incomeId}")]
+    [ProducesResponseType(typeof(IncomeApiModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails),StatusCodes.Status400BadRequest)]
+    public async Task<IncomeApiModel> UpdateAsync(int incomeId, IncomeApiModel income, CancellationToken cancellationToken)
+        => mapper.Map<IncomeApiModel>(
+            await mediator.Send(
+                new UpdateIncomeCommand
+                {
+                    IncomeId = incomeId,
+                    Income = mapper.Map<IncomeDtoModel>(income)
+                }, 
+                cancellationToken));
+    
+    /// <summary>
+    /// Delete Income
+    /// </summary>
+    /// <param name="incomeId">Income Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Income</returns>
+    [HttpDelete("{incomeId}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails),StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateAsync(int incomeId, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new DeleteIncomeCommand { IncomeId = incomeId }, cancellationToken);
+        return Ok();
     }
 
     /// <summary>

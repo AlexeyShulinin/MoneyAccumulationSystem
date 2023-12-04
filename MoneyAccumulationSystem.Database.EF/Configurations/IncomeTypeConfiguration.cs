@@ -5,10 +5,12 @@ using MoneyAccumulationSystem.Database.EF.Models;
 
 namespace MoneyAccumulationSystem.Database.EF.Configurations;
 
-public class IncomeTypeConfiguration : IEntityTypeConfiguration<IncomeType>
+public class IncomeTypeConfiguration : BaseEntityConfiguration<IncomeType>
 {
-    public void Configure(EntityTypeBuilder<IncomeType> builder)
+    public override void Configure(EntityTypeBuilder<IncomeType> builder)
     {
+        base.Configure(builder);
+        
         builder.Property(x => x.Name).HasMaxLength(50);
 
         builder.HasData(new List<IncomeType>

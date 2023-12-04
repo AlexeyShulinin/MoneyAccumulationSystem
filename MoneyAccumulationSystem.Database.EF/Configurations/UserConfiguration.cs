@@ -4,11 +4,13 @@ using MoneyAccumulationSystem.Database.EF.Models;
 
 namespace MoneyAccumulationSystem.Database.EF.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : BaseEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(x => x.Login).HasMaxLength(256);
+        base.Configure(builder);
+        
+        builder.Property(x => x.Login).HasMaxLength(256).IsUnicode();
         builder.Property(x => x.HashedPassword).HasMaxLength(512);
     }
 }

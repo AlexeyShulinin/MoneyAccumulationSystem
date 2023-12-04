@@ -7,5 +7,8 @@ public class PaymentSchedule : BaseEntity
     public string Name { get; set; }
     public decimal Amount { get; set; }
 
+    public int? SchedulePeriodId { get; set; }
+
     public User User { get; set; }
+    public SchedulePeriod SchedulePeriod { get; set; }
 }
