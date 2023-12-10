@@ -8,6 +8,18 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+const string developmentPolicy = "DevelopmentPolicy";
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(developmentPolicy,
+            corsPolicyBuilder =>
+            {
+                corsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
+    });
+}
 
 builder.Services.ConfigureServices(builder.Configuration);
 
@@ -39,6 +51,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(developmentPolicy);
 
 app.UseMiddleware<MasExceptionMiddleware>();
 

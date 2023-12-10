@@ -33,9 +33,9 @@ public class IncomesController : BaseApiController
     /// <param name="cancellationToken"></param>
     /// <returns>List of user's Incomes</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IList<IncomeApiModel>), StatusCodes.Status200OK)]
-    public async Task<IList<IncomeApiModel>> GetListAsync(CancellationToken cancellationToken)
-        => mapper.Map<List<IncomeApiModel>>(await mediator.Send(new GetIncomeListQuery(), cancellationToken));
+    [ProducesResponseType(typeof(BaseListApiModel<IncomeApiModel>), StatusCodes.Status200OK)]
+    public async Task<BaseListApiModel<IncomeApiModel>> GetListAsync(CancellationToken cancellationToken)
+        => new(mapper.Map<List<IncomeApiModel>>(await mediator.Send(new GetIncomeListQuery(), cancellationToken)));
 
     /// <summary>
     /// Get Income by Id
