@@ -27,6 +27,7 @@ public class IncomeRepository : IIncomeRepository
             .Where(x => x.UserId == authUser.Id)
             .Include(x => x.User)
             .Include(x => x.IncomeType)
+            .Include(x => x.Currency)
             .ToListAsync(cancellationToken);
     }
 

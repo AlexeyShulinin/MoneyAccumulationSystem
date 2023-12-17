@@ -6,6 +6,7 @@ namespace MoneyAccumulationSystem.Database.EF;
 
 public class MasDbContext : DbContext
 {
+    public DbSet<Currency> Currencies { get; set; }
     public DbSet<Income> Incomes { get; set; }
     public DbSet<IncomeType> IncomeTypes { get; set; }
     public DbSet<User> Users { get; set; }

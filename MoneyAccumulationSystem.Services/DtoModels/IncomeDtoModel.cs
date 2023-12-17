@@ -9,5 +9,6 @@ public class IncomeDtoModel : BaseDtoModel
     public string Notes { get; set; }
 
     public ReferenceDtoModel User { get; set; }
+    public CurrencyReferenceDtoModel Currency { get; set; }
     public ReferenceDtoModel IncomeType { get; set; }
 }

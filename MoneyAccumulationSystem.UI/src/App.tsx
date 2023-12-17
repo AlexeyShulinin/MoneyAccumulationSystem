@@ -1,14 +1,21 @@
 import React from 'react';
-import Incomes from './views/Incomes';
+import MenuList from './components/MenuList';
+import { Col, Row } from 'antd';
+import { Outlet } from 'react-router-dom';
 
 function App() {
     return (
-        <div>
-            <h1>Money Accumulation System</h1>
-            <div>
-                <Incomes />
-            </div>
-        </div>
+        <Row wrap={false}>
+            <Col>
+                <MenuList />
+            </Col>
+            <Col flex="auto">
+                <h1>Money Accumulation System</h1>
+                <Col id="detail" style={{ padding: 20 }}>
+                    <Outlet />
+                </Col>
+            </Col>
+        </Row>
     );
 }
 

@@ -10,5 +10,6 @@ public class MiscProfile : Profile
     {
         CreateMap<ReferenceDtoModel, ReferenceApiModel>();
         CreateMap<ReferenceApiModel, ReferenceDtoModel>();
+        CreateMap<CurrencyReferenceDtoModel, CurrencyReferenceApiModel>();
     }
 }

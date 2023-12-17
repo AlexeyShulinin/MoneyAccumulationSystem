@@ -11,5 +11,6 @@ public class MiscProfile : Profile
         CreateMap<IncomeType, ReferenceDtoModel>();
         CreateMap<User, ReferenceDtoModel>()
             .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Login));
+        CreateMap<Currency, CurrencyReferenceDtoModel>();
     }
 }

@@ -24,6 +24,7 @@ public class SeedBackgroundService : BackgroundService
         
         SeedUsers(dbContext);
 
+        SeedCurrencies(dbContext);
         SeedIncomeTypes(dbContext);
         SeedIncomes(dbContext);
         
@@ -47,23 +48,31 @@ public class SeedBackgroundService : BackgroundService
         });
     }
 
+    private void SeedCurrencies(MasDbContext dbContext)
+    {
+        dbContext.Currencies.AddRange(new List<Currency>
+        {
+            new() { Id = Currency.Usd, Name = "USD", Symbol = "$" }
+        });
+    }
+
     private void SeedIncomes(MasDbContext dbContext)
     {
         dbContext.Incomes.AddRange(new List<Income>
         {
             new()
             {
-                Id = 1, UserId = 1, IncomeTypeId = 1, Amount = 800, 
+                Id = 1, UserId = 1, IncomeTypeId = 1, Amount = 800, CurrencyId = 1,
                 DateTimeOffset = new DateTimeOffset(new DateTime(2022, 1, 5), TimeSpan.Zero)
             },
             new()
             {
-                Id = 2, UserId = 1, IncomeTypeId = 1, Amount = 900, 
+                Id = 2, UserId = 1, IncomeTypeId = 1, Amount = 900, CurrencyId = 1,
                 DateTimeOffset = new DateTimeOffset(new DateTime(2022, 1, 20), TimeSpan.Zero)
             },
             new()
             {
-                Id = 3, UserId = 1, IncomeTypeId = 1, Amount = 1000, 
+                Id = 3, UserId = 1, IncomeTypeId = 1, Amount = 1000, CurrencyId = 1,
                 DateTimeOffset = new DateTimeOffset(new DateTime(2022, 2, 20), TimeSpan.Zero)
             }
         });

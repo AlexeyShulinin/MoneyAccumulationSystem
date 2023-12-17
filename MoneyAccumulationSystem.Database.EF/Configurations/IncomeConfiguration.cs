@@ -21,6 +21,11 @@ public class IncomeConfiguration : BaseEntityConfiguration<Income>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
         
+        builder.HasOne(x => x.Currency)
+            .WithMany()
+            .HasForeignKey(x => x.CurrencyId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
         builder.HasOne(x => x.IncomeType)
             .WithMany()
             .HasForeignKey(x => x.IncomeTypeId)
